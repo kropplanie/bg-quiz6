@@ -17,10 +17,10 @@ while True:
         user_id = match.group(1)  # extract user id
 
         # hash object to its 64 bit representation
-        hash_rep = bin(int.from_bytes(hashlib.sha256(user_id.encode()).digest(), 'little'))[-64:]
-        hash_rep = hash_rep[::-1]
+        hash_value = hashlib.sha256(value.encode('utf8')).hexdigest()
+        hash_int = int(hash_value, 16)
         # count the number of leading 0s
-        leading_0s = next(i for i, e in enumerate(hash_rep + '1') if e == '1')
+        leading_0s = next(i for i, e in enumerate(hash_int + '1') if e == '1')
 
         # check if we have a new highest number of leading zeros and update if necessary
         if leading_0s > max_leading:

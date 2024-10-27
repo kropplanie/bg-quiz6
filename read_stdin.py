@@ -26,7 +26,7 @@ while True:
 
         # check if we have a new highest number of leading zeros and update if necessary
         if leading_0s > max_leading:
-            print(f'new max leading zeros hash: {user_id}, {hash_rep}')
+            print(f'new max leading zeros hash: {user_id}, {rev_bin_hash}')
             max_leading = leading_0s # record new maximum
             users_estimate = 2**max_leading
     

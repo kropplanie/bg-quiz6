@@ -2,7 +2,7 @@
 
 import sys
 import re
-import hashlib
+import mmh3
 
 # initialize maximum number of leading 0s
 max_leading = 0

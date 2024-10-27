@@ -16,7 +16,7 @@ while True:
     if match:
         user_id = match.group(1)  # extract user id
         
-        hash_value = mmh3.hash(user_id, 42, signed=False) & ((1 << 32)-1)        
+        hash_value = mmh3.hash(user_id, 42, signed=False) & ((1 << 64)-1)        
         bin_hash_value = bin(hash_value)[2:]  # Convert to binary and remove '0b' prefix
         # count the number of trailing 0s
         trailing_0s = next(i for i, e in enumerate(reversed(bin_hash_value)) if e == '1')

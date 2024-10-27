@@ -18,11 +18,11 @@ while True:
 
         hash_value = mmh3.hash(user_id, 42, signed=False) & ((1 << 32)-1)        
         # count the number of leading 0s
-        trailing_0s = next(i for i, e in enumerate(reversed(rev_hash_value)) if e == '1')
+        trailing_0s = next(i for i, e in enumerate(reversed(hash_value)) if e == '1')
 
         # check if we have a new highest number of leading zeros and update if necessary
         if trailing_0s > max_leading:
-            print(f'new max leading zeros hash: {user_id}, {rev_hash_value}')
+            print(f'new max leading zeros hash: {user_id}, {hash_value}')
             max_trailing = trailing_0s # record new maximum
             users_estimate = 2**max_trailing
     

@@ -17,13 +17,13 @@ while True:
         user_id = match.group(1)  # extract user id
         
         hash_value = mmh3.hash(user_id, 42, signed=False) & ((1 << 32)-1)        
-        rev_hash_value = bin(rev_hash_value)[2:]  # Convert to binary and remove '0b' prefix
+        bin_hash_value = bin(hash_value)[2:]  # Convert to binary and remove '0b' prefix
         # count the number of trailing 0s
-        trailing_0s = next(i for i, e in enumerate(reversed(hash_value)) if e == '1')
+        trailing_0s = next(i for i, e in enumerate(reversed(bin_hash_value)) if e == '1')
 
         # check if we have a new highest number of leading zeros and update if necessary
         if trailing_0s > max_leading:
-            print(f'new max leading zeros hash: {user_id}, {hash_value}')
+            print(f'new max leading zeros hash: {user_id}, {bin_hash_value}')
             max_trailing = trailing_0s # record new maximum
             users_estimate = 2**max_trailing
     

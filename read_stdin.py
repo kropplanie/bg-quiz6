@@ -22,7 +22,7 @@ while True:
         trailing_0s = next(i for i, e in enumerate(reversed(bin_hash_value)) if e == '1')
 
         # check if we have a new highest number of leading zeros and update if necessary
-        if trailing_0s > max_leading:
+        if trailing_0s > max_trailing:
             print(f'new max leading zeros hash: {user_id}, {bin_hash_value}')
             max_trailing = trailing_0s # record new maximum
             users_estimate = 2**max_trailing

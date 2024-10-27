@@ -15,9 +15,10 @@ while True:
     match = re.search(user_pattern, line) # use re.search to find the user ID in the line
     if match:
         user_id = match.group(1)  # extract user id
-
+        
         hash_value = mmh3.hash(user_id, 42, signed=False) & ((1 << 32)-1)        
-        # count the number of leading 0s
+        rev_hash_value = bin(rev_hash_value)[2:]  # Convert to binary and remove '0b' prefix
+        # count the number of trailing 0s
         trailing_0s = next(i for i, e in enumerate(reversed(hash_value)) if e == '1')
 
         # check if we have a new highest number of leading zeros and update if necessary

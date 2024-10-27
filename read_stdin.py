@@ -19,6 +19,7 @@ while True:
         # hash object to its 64 bit representation
         hash_value = hashlib.sha256(user_id.encode('utf8')).hexdigest()
         hash_int = int(hash_value, 16)
+        bin_hash = bin(hash_int)[2:] # convert to binary
         # count the number of leading 0s
         leading_0s = next(i for i, e in enumerate(hash_int + '1') if e == '1')
 

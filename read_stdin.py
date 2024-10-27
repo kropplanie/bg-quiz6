@@ -16,7 +16,7 @@ while True:
     if match:
         user_id = match.group(1)  # extract user id
 
-        hash_value = hashlib.sha256(user_id.encode('utf8')).hexdigest()
+        hash_value = mmh3.hash(user_id, 42, signed=False) & ((1 << 32)-1)
         hash_int = int(hash_value, 16)
         bin_hash = bin(hash_int)[2:]  # convert to binary
         rev_bin_hash = bin_hash[::-1]

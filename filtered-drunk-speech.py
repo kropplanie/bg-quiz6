@@ -82,18 +82,22 @@ for i in range(1000):
         if len(words) < 3:
             continue
         else:
-            words_df = spark.createDataFrame([(word,) for word in words], ["word"]) # put words in a spark dataframe
-            result_df = words_df.withColumn("in_bloom_filter", is_in_bloom_filter_udf("word")) # check the filter
-            # Count only after buffering
-            sentence_buffer.append(words)
+            # Check and print sentences from the buffer
+            # Put words in a Spark DataFrame
+            words_df = spark.createDataFrame([(word,) for word in words], ["word"])
+            result_df = words_df.withColumn("in_bloom_filter", is_in_bloom_filter_udf("word"))
+
+            # Add a sentence to the buffer
+            sentence_buffer.append(' '.join(words))  # Join words into a single string
+
             if len(sentence_buffer) >= buffer_limit:
                 if result_df.filter(col("in_bloom_filter") == True).count() == 0:
-                    # Only print if no words were in the Bloom filter
+                    # Print all sentences in the buffer
                     for buffered_sentence in sentence_buffer:
-                        print(' '.join(buffered_sentence.split()), flush=True)
+                        print(buffered_sentence, flush=True)
 
-            # Clear buffer
-            sentence_buffer = []
+                # Clear the buffer
+                sentence_buffer = []
 
             # Print remaining sentences if buffer is not empty
             if sentence_buffer and result_df.filter(col("in_bloom_filter") == True).count() == 0:

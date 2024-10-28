@@ -33,6 +33,18 @@ decoded_bloom = base64.b64decode(encoded_bloom)
 # convert the decoded Bloom filter to a list of bits
 bloom_filter_bits = [int(bit) for byte in decoded_bloom for bit in format(byte, '08b')]
 
+# define a function to hash a word and check its membership in the Bloom filter
+def is_in_bloom_filter(word):
+    hash_values = [
+        hash(word + str(i)) % len(bloom_filter_bits)
+        for i in range(3)
+    ]
+    return all(bloom_filter_bits[h] for h in hash_values)
+
+
+# make the function a user defined function
+is_in_bloom_filter_udf = udf(is_in_bloom_filter, BooleanType())
+
 
 
 afinn_src = 'https://raw.githubusercontent.com/fnielsen/afinn/master/afinn/data/AFINN-en-165.txt'

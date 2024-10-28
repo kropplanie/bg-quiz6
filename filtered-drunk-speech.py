@@ -85,7 +85,7 @@ for i in range(1000):
             words_df = spark.createDataFrame([(word,) for word in words], ["word"]) # put words in a spark dataframe
             result_df = words_df.withColumn("in_bloom_filter", is_in_bloom_filter_udf("word")) # check the filter
             # Count only after buffering
-            sentence_buffer.append(sentence)
+            sentence_buffer.append(words)
             if len(sentence_buffer) >= buffer_limit:
                 if result_df.filter(col("in_bloom_filter") == True).count() == 0:
                     # Only print if no words were in the Bloom filter

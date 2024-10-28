@@ -4,6 +4,7 @@
 import importlib
 import os
 import sys
+print('working')
 
 from click_gen import *
 max_evs = 6000         # Total number of events that will be generated. 

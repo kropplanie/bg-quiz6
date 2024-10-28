@@ -72,7 +72,7 @@ random.seed (951)
 words = []
 sent = 0
 sentence_buffer = []
-buffer_limit = 2 
+buffer_limit = 1 
 for i in range(1000):
     indx = random.randint(0,5000)
     if indx < 3382:

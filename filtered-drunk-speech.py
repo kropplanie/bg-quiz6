@@ -71,6 +71,8 @@ def random_delay(avg):
 random.seed (951)
 words = []
 sent = 0
+sentence_buffer = []
+buffer_limit = 5 
 for i in range(1000):
     indx = random.randint(0,5000)
     if indx < 3382:

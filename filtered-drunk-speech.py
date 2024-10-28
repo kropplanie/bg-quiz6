@@ -24,6 +24,17 @@ hdfs_path = "hdfs://///user/kroppl/bloom-filter/bloom_filter_encoded.txt"
 # load the Base64-encoded text file into a DataFrame
 encoded_bloom_df = spark.read.text(hdfs_path)
 
+# extract the encoded string
+encoded_bloom = encoded_bloom_df.first()[0]
+
+# decode the Bloom filter
+decoded_bloom = base64.b64decode(encoded_bloom)
+
+# convert the decoded Bloom filter to a list of bits
+bloom_filter_bits = [int(bit) for byte in decoded_bloom for bit in format(byte, '08b')]
+
+
+
 afinn_src = 'https://raw.githubusercontent.com/fnielsen/afinn/master/afinn/data/AFINN-en-165.txt'
 
 afinn_df = pd.read_csv(afinn_src, sep='\t', header=None, dtype={'word': str, 'valence': np.int32})

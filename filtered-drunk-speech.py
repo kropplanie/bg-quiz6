@@ -18,6 +18,11 @@ spark = SparkSession.builder \
     .appName("BloomFilterCheck") \
     .getOrCreate()
 
+# path to the Base64-encoded text file in HDFS
+hdfs_path = "hdfs://///user/kroppl/bloom-filter/bloom_filter_encoded.txt" 
+
+# load the Base64-encoded text file into a DataFrame
+encoded_bloom_df = spark.read.text(hdfs_path)
 
 afinn_src = 'https://raw.githubusercontent.com/fnielsen/afinn/master/afinn/data/AFINN-en-165.txt'
 

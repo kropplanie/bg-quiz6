@@ -4,8 +4,20 @@ import nltk
 import random
 import time
 import pathlib
+import base64
 
 import pandas as pd, numpy as np
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import udf
+from pyspark.sql.types import BooleanType
+from pyspark.sql.functions import col, unbase64
+
+# initialize Spark session
+spark = SparkSession.builder \
+    .appName("BloomFilterCheck") \
+    .getOrCreate()
+
 
 afinn_src = 'https://raw.githubusercontent.com/fnielsen/afinn/master/afinn/data/AFINN-en-165.txt'
 
@@ -46,3 +58,6 @@ for i in range(1000):
             words = []
 
 print ('Sent', sent, 'utterings', flush=True, file=sys.stderr)
+
+# stop the Spark session
+spark.stop()

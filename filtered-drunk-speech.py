@@ -80,6 +80,8 @@ for i in range(1000):
         if len(words) < 3:
             continue
         else:
+            words_df = spark.createDataFrame([(word,) for word in words], ["word"]) # put words in a spark dataframe
+            result_df = words_df.withColumn("in_bloom_filter", is_in_bloom_filter_udf("word")) # check the filter
             print (' '.join(words), flush=True)
             time.sleep(random_delay(deltaT))
             sent += 1

@@ -82,10 +82,21 @@ for i in range(1000):
         else:
             words_df = spark.createDataFrame([(word,) for word in words], ["word"]) # put words in a spark dataframe
             result_df = words_df.withColumn("in_bloom_filter", is_in_bloom_filter_udf("word")) # check the filter
-            if result_df.filter(col("in_bloom_filter") == True).count() > 0: # if the filter found any of the bad words in the sentence, do not print sentence
-                continue
-            else:
-                print (' '.join(words), flush=True) # otherwise, print the sentence
+            # Count only after buffering
+            sentence_buffer.append(sentence)
+            if len(sentence_buffer) >= buffer_limit:
+                if result_df.filter(col("in_bloom_filter") == True).count() == 0:
+                    # Only print if no words were in the Bloom filter
+                    for buffered_sentence in sentence_buffer:
+                        print(' '.join(buffered_sentence.split()), flush=True)
+
+            # Clear buffer
+            sentence_buffer = []
+
+            # Print remaining sentences if buffer is not empty
+            if sentence_buffer and result_df.filter(col("in_bloom_filter") == True).count() == 0:
+                for buffered_sentence in sentence_buffer:
+                    print(' '.join(buffered_sentence.split()), flush=True)
             time.sleep(random_delay(deltaT))
             sent += 1
             words = []

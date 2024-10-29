@@ -103,6 +103,8 @@ for i in range(1000):
             if sentence_buffer and result_df.filter(col("in_bloom_filter") == True).count() == 0:
                 for buffered_sentence in sentence_buffer:
                     print(' '.join(buffered_sentence.split()), flush=True)
+            else:
+                print("supressed")
             time.sleep(random_delay(deltaT))
             sent += 1
             words = []
